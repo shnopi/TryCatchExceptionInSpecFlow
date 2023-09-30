@@ -1,5 +1,6 @@
 ﻿using TechTalk.SpecFlow;
 using System;
+using System.Reflection;
 
 namespace SpecFlowProject1.Hooks
 {
@@ -21,8 +22,10 @@ namespace SpecFlowProject1.Hooks
                 var stepText = ScenarioStepContext.Current.StepInfo.Text;
                 var errorMessage = ScenarioContext.Current.TestError.Message;
                 var enhancedErrorMessage = $"Step '{stepText}' failed with error: {errorMessage}";
+                Exception originalException = ScenarioContext.Current.TestError;
+                Exception newException = new Exception(enhancedErrorMessage, originalException);
 
-                throw new Exception(enhancedErrorMessage);
+                throw newException;
             }
         }
     }
